@@ -1,7 +1,12 @@
 html
 	head
-		title Hellow Word!
-		link(href='/style.css' rel='stylesheet')
+		meta(http-equiv="Content-Type" content="text/html; charset=gbk")
+		meta(content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" name="viewport")
+		link(rel="stylesheet" href="/style.css")
+		link(rel="stylesheet" href="/index.css")
 	body
-		p 你好
-
+		.main
+			img(src="/images/index.jpg")
+			form(action="/search" method="get")
+				input(type="text" name="value")
+				input(type="submit" value="搜索")
