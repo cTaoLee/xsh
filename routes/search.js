@@ -4,29 +4,37 @@ var router = express.Router();
 /* GET search page. */
 router.get('/', function(req, res, next) {
 
-	var ng = require('nodegrass');
-	var iconv = require('iconv-lite');
 
-	var url = "http://www.shuquge.com/modules/article/search.php";
-	 	url = "http://127.0.0.1/php/";
-	var reqheaders = {'Content-Type': 'application/x-www-form-urlencoded'};
+    var ng = require('nodegrass');
+    var cheerio = require('cheerio');
+    var querystring = require('querystring')
 
+    var url = "http://m.biqudao.com/SearchBook.php";
+    var data = {keyword: req.query.value};
+    var reqheaders = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': (querystring.stringify(data)).length
+    };
+    var charset = "utf8";
+    var callback = function(r,status,headers){
 
-var a = iconv.encode(req.query.value,'gbk');
-a = new Buffer(a,'binary');
-a = a.toString();
+        var $ = cheerio.load(r);
+        var items = [];
+        $('.mybook a').each(function (idx, element) {
+            var $element = $(element);
+            items.push({
+                title: $element.find('.title').text(),
+                href: $element.attr('href'),
+                new:$element.find('.author').last().text()
+            });
 
-	var data = {searchkey: a};
-	var charset = "gbk";
-	var callback = function(r,status,headers){
-		res.send(r);
-	};
+        });
+        res.render('search',{lib:items});
+    };
 
-	ng.post(url,callback,reqheaders,data,charset);
+    ng.post(url,callback,reqheaders,data,charset);
+
 
 });
 
 module.exports = router;
-
-
-// _sendReq

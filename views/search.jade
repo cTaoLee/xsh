@@ -2,4 +2,9 @@
 extends ./default.jade
 
 block content
-	body=body
+	for i in lib
+		p=i.title
+		p=i.href
+		p=i.new
+
+
