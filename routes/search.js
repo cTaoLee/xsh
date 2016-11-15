@@ -10,10 +10,12 @@ router.get('/', function(req, res, next) {
     var querystring = require('querystring')
 
     var url = "http://m.biqudao.com/SearchBook.php";
-    var data = {keyword: req.query.value};
+    var data = querystring.stringify({
+        keyword: req.query.value
+    });
     var reqheaders = {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Content-Length': (querystring.stringify(data)).length
+        'Content-Length': data.length
     };
     var charset = "utf8";
     var callback = function(r,status,headers){
